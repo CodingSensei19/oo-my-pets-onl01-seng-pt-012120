@@ -1,68 +1,73 @@
+require 'pry'
 class Owner
-  attr_reader :species, :name
-  attr_accessor :pets, :dog, :cat
-
+  attr_reader :name, :species
   @@all = []
-  @@pets = {:dogs => [], :cats => []}
-
   def initialize(name)
-    @species = "human"
     @name = name
+    @species = "human"
     @@all << self
+    @pets = {dogs => [], cats =>[]}
   end
-
+  def say_species
+    return "I am a #{@species}."
+  end
   def self.all
     @@all
   end
-
   def self.count
-    @@all.length
+    self.all.count
   end
-
   def self.reset_all
-    @@all.clear
+    self.all.clear
   end
-
-  def say_species
-    "I am a #{@species}."
+  def cats 
+    Cat.all.select {|cat| cat.owner == self}
   end
-
-  def pets
-    @@pets
+  def dogs 
+    Dog.all.select {|dog| dog.owner == self}
   end
-
-  def buy_cat(cat)
-    @@pets[:cats] << Cat.new(cat)
+  def buy_cat(name)
+    cat = Cat.new(name, self)
   end
-
-  def buy_dog(dog)
-    @@pets[:dogs] << Dog.new(dog)
+  def buy_dog(name)
+    dog = Dog.new(name, self)
   end
-
   def walk_dogs
-    @@pets[:dogs].each do |dog|
-      dog.mood = 'happy'
-    end
-end
-
-  def play_with_cats
-    @@pets[:cats].each do |cat|
-      cat.mood = 'happy'
-    end
-  end
-
-  def list_pets
-    "I have #{pets[:dogs].length} dog(s), and #{pets[:cats].length} cat(s)."
-  end
-
-
-  def sell_pets
-    pets.each do |pet, arr|
-      arr.map do |pet|
-        pet.mood = 'nervous'
+    Dog.all.find do |dog|
+      if dog.owner == self 
+        dog.mood = "happy"
       end
-      arr.clear
     end
   end
-
+  def feed_cats
+    Cat.all.find do |cat|
+      if cat.owner == self 
+        cat.mood = "happy"
+      end
+    end
+  end
+  
+#--------------------------------  
+  def sell_pets
+    pets = self.dogs + self.cats
+    pets.each do |pet|
+      pet.mood = "nervous"
+      pet.owner = nil
+    
+    
+    # Dog.all.find do |dog|
+    #   if dog.owner == self 
+    #     dog.mood = "nervous"
+    #   end
+    # end
+    # Cat.all.find do |cat|
+    #   if cat.owner == self 
+    #     cat.mood = "nervous"
+    #   end
+    # end
+    end
+  end
+  def list_pets
+      return "I have #{self.dogs.count} dog(s), and #{self.cats.count} cat(s)."
+  end
 end
