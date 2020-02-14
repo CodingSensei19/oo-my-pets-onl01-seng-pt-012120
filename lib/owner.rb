@@ -20,10 +20,10 @@ class Owner
   def self.reset_all
     self.all.clear
   end
-  def cats 
+  def cats
     Cat.all.select {|cat| cat.owner == self}
   end
-  def dogs 
+  def dogs
     Dog.all.select {|dog| dog.owner == self}
   end
   def buy_cat(name)
@@ -34,34 +34,34 @@ class Owner
   end
   def walk_dogs
     Dog.all.find do |dog|
-      if dog.owner == self 
+      if dog.owner == self
         dog.mood = "happy"
       end
     end
   end
   def feed_cats
     Cat.all.find do |cat|
-      if cat.owner == self 
+      if cat.owner == self
         cat.mood = "happy"
       end
     end
   end
-  
-#--------------------------------  
+
+#--------------------------------
   def sell_pets
     pets = self.dogs + self.cats
     pets.each do |pet|
       pet.mood = "nervous"
       pet.owner = nil
-    
-    
+
+
     # Dog.all.find do |dog|
-    #   if dog.owner == self 
+    #   if dog.owner == self
     #     dog.mood = "nervous"
     #   end
     # end
     # Cat.all.find do |cat|
-    #   if cat.owner == self 
+    #   if cat.owner == self
     #     cat.mood = "nervous"
     #   end
     # end
